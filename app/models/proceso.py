@@ -17,6 +17,10 @@ class Proceso(Base):
     substate_detail = Column(String(50), nullable=True)
     process_entry_date = Column(DateTime(timezone=True), default=lambda: datetime.now(ARG))
     HR_interview = Column(DateTime(timezone=True), nullable=True)
+    CF_interview = Column(DateTime(timezone=True), nullable=True)
+    client_interview = Column(DateTime(timezone=True), nullable=True)
+    offer_interview = Column(DateTime(timezone=True), nullable=True)
+    start_date = Column(DateTime(timezone=True), nullable=True)
     feedback = Column(String(1000), nullable=True)
 
     candidato = relationship("Candidato", back_populates="procesos")
