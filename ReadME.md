@@ -64,12 +64,21 @@ Aplicar migraciones a la base de datos (Supabase):
 alembic upgrade head
 ```
 
-## 🔄 Versionado (Git Flow)
+🔄 Versionado (Workflow)
+1. Nueva Rama
+git checkout develop -> git pull origin develop -> git checkout -b GES-XX
 
-1.  **Nueva Rama**: `git checkout -b feature/nombre-tarea`
-2.  **Desarrollo**: `git add .` -> `git commit -m "feat: descripción"`
-3.  **Subida**: `git push origin feature/nombre-tarea`
-4.  **Pull Request**: En GitHub, fusionar a `main`.
+2. Ciclo de Desarrollo
+git status -> git add . -> git commit -m "GES-XX: descripción corta del cambio"
+
+3. Subida a GitHub
+git push origin GES-XX
+
+4. Integración (En la web de GitHub)
+Entrar al repo y hacer clic en "Compare & pull request" asegurando como destino base: develop. Merge pull request & Delete branch.
+
+5. Limpieza y Sincronización Local
+git checkout develop -> git pull origin develop -> git branch -d GES-XX -> git fetch --prune
 
 ## 🧪 Testing
 
@@ -78,6 +87,17 @@ Para ejecutar las pruebas (asegúrate de tener `pytest` instalado):
 ```bash
 pytest
 ```
+
+para ejecutar todas las pruebas, hay que ejecutar:
+    pytest tests/ -v
+
+para ejecutar las pruebas de un archivo test en particular:
+    pytest tests/test_auth.py -v
+    pytest tests/test_commercial.py -v
+    pytest tests/test_security.py -v
+
+para ejecutar una prueba en particular:
+    pytest tests/test_auth.py::test_login_success -v
 
 ## 📂 Estructura
 
