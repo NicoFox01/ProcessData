@@ -9,7 +9,7 @@ async def test_create_company_admin_success(client, admin_token):
         "company_name": "Empresa Test"
     }
     #Act
-    response = await client.post("/api/v1/companies", json=payload, headers = admin_token) 
+    response = await client.post("/api/v1/companies/", json=payload, headers = admin_token) 
     #Assert
     assert response.status_code == 201
     data = response.json()
@@ -22,7 +22,7 @@ async def test_create_company_forbidden_for_selector(client, selector_token):
         "company_name": "Empresa Test"
     }
     #Act
-    response = await client.post("/api/v1/companies", json=payload, headers = selector_token) 
+    response = await client.post("/api/v1/companies/", json=payload, headers = selector_token) 
     #Assert
     assert response.status_code == 403
 
@@ -33,7 +33,7 @@ async def test_create_company_forbidden_for_head(client, head_token):
         "company_name": "Empresa Test"
     }
     #Act
-    response = await client.post("/api/v1/companies", json=payload, headers = head_token) 
+    response = await client.post("/api/v1/companies/", json=payload, headers = head_token) 
     #Assert
     assert response.status_code == 403
 

@@ -8,18 +8,12 @@ from sqlalchemy import select
 
 from app.core import security
 from app.core.config import settings
-from app.core.database import AsyncSessionLocal
-from app.models.user import User # Corregido: User
-from app.schemas.token import TokenData # Corregido: TokenData
+from app.core.database import AsyncSessionLocal, get_db
+from app.models.user import User
+from app.models.enums import UserRole
+from app.schemas.token import TokenData
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl=f"{settings.API_VERSION}/auth/login")
-
-async def get_db() -> AsyncGenerator[AsyncSession, None]:
-    async with AsyncSessionLocal() as session:
-        try:
-            yield session
-        finally:
-            await session.close()
 
 async def get_current_user(
     db: Annotated[AsyncSession, Depends(get_db)],
@@ -47,3 +41,23 @@ async def get_current_user(
         raise HTTPException(status_code=400, detail="Inactive user")
         
     return user
+
+async def requiere_admin(
+    current_user: Annotated[User, Depends(get_current_user)]
+) -> User:
+    if current_user.role != UserRole.ADMIN:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not enough permissions",
+        )
+    return current_user
+
+async def requiere_admin_or_selector(
+    current_user: Annotated[User, Depends(get_current_user)]
+) -> User:
+    if current_user.role not in [UserRole.ADMIN, UserRole.SELECTOR]:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not enough permissions",
+        )
+    return current_user
