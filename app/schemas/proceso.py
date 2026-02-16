@@ -21,10 +21,18 @@ class ProcesoUpdate(BaseModel):
     substate_detail: Optional[str] = None
     feedback: Optional[str] = None
     HR_interview: Optional[datetime] = None 
+    CF_interview: Optional[datetime] = None
+    client_interview: Optional[datetime] = None
+    offer_interview: Optional[datetime] = None
+    start_date: Optional[datetime] = None
 
 class ProcesoResponse(ProcesoBase):
     id: UUID
     process_entry_date: datetime 
     HR_interview: Optional[datetime] = None 
+    CF_interview: Optional[datetime] = None
+    client_interview: Optional[datetime] = None
+    offer_interview: Optional[datetime] = None
+    start_date: Optional[datetime] = None
 
     model_config = ConfigDict(from_attributes=True)
