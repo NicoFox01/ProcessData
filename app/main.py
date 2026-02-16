@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from mangum import Mangum
-
+from app.api.api import api_router
+from app.core.config import settings
 app = FastAPI(title="PD-BE Serverless API")
 
 @app.get("/")
@@ -13,3 +14,5 @@ def health_check():
 
 # Handler para AWS Lambda / Vercel
 handler = Mangum(app)
+
+app.include_router(api_router, prefix=settings.API_VERSION)

@@ -4,14 +4,14 @@ from uuid import UUID
 from datetime import datetime
 
 class ClienteBase(BaseModel):
-    company_name: str
+    client_name: str
     empresa_id: UUID
 
 class ClienteCreate(ClienteBase):
     pass
 
-class ClienteUpdate(ClienteBase):
-    company_name: Optional[str] = None
+class ClienteUpdate(BaseModel):
+    client_name: Optional[str] = None
     empresa_id: Optional[UUID] = None
 
 class ClienteResponse(ClienteBase):
