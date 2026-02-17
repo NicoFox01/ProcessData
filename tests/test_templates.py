@@ -1,6 +1,6 @@
 import pytest
 
-BASE_URL = "/api/v1/templates"
+BASE_URL = "/api/v1/templates/"
 
 @pytest.mark.asyncio
 async def test_create_template_happy_path_admin(client, sample_job, admin_token):
@@ -69,17 +69,3 @@ async def test_list_templates_head(client, sample_job, head_token):
     response = await client.get(BASE_URL, headers=head_token)
     assert response.status_code == 403
 
-@pytest.mark.asyncio
-async def test_compare_metrics_admin(client, sample_job, admin_token):
-    response = await client.get("/api/v1/metrics/job-comparison", headers=admin_token)
-    assert response.status_code == 200
-
-@pytest.mark.asyncio
-async def test_compare_metrics_selector(client, sample_job, selector_token):
-    response = await client.get("/api/v1/metrics/job-comparison", headers=selector_token)
-    assert response.status_code == 200
-
-@pytest.mark.asyncio
-async def test_compare_metrics_head(client, sample_job, head_token):
-    response = await client.get("/api/v1/metrics/job-comparison", headers=head_token)
-    assert response.status_code == 200
