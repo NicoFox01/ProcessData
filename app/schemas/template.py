@@ -16,6 +16,13 @@ class TemplateCreate(BaseModel):
     type_of_process: Optional[TipoProceso] = None
     job_id: Optional[UUID] = None
 
+class TemplateUpdate(BaseModel):
+    name: Optional[str] = None
+    description: Optional[str] = None
+    vertical: Optional[Vertical] = None
+    type_of_process: Optional[TipoProceso] = None
+    job_id: Optional[UUID] = None
+
 class TemplateResponse(TemplateBase):
     id: UUID
     job_id: Optional[UUID] = None

@@ -24,3 +24,4 @@ class Job(Base):
     empresa = relationship("Empresa", back_populates="job")
     cliente = relationship("Cliente", back_populates="job")
     procesos = relationship("Proceso", back_populates="job")
+    templates = relationship("Template", back_populates="job")

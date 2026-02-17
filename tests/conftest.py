@@ -4,6 +4,8 @@ from httpx import AsyncClient, ASGITransport
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 from sqlalchemy.orm import sessionmaker # and keep other orm imports if needed, but async_sessionmaker is in ext.asyncio
 from uuid import uuid4
+from app.core.security import get_password_hash, create_access_token
+from app.models.enums import Vertical, TipoProceso, EstadoJob, UserRole
 
 from app.main import app
 from app.core.config import settings
@@ -12,10 +14,8 @@ from app.core.database import get_db
 from app.models.user import User
 from app.models.empresa import Empresa
 from app.models.cliente import Cliente
-from app.models.template import Template
-from app.models.enums import UserRole
-from app.core.security import get_password_hash, create_access_token
 from app.models.job import Job
+from app.models.template import Template
 from app.models.enums import Vertical, TipoProceso, EstadoJob
 
 # Configurar pytest-asyncio
