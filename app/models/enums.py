@@ -53,6 +53,7 @@ class EstadoJob(str, Enum):
     ABIERTA = "ABIERTA"
     PAUSADA = "PAUSADA"
     CERRADA = "CERRADA"
+    CANCELADA = "CANCELADA"
 class Vertical(str, Enum):
     DEV = "Desarrollo"
     CLOUD_DEVOPS = "Cloud & DevOps"
