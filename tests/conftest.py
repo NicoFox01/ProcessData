@@ -12,8 +12,11 @@ from app.core.database import get_db
 from app.models.user import User
 from app.models.empresa import Empresa
 from app.models.cliente import Cliente
+from app.models.template import Template
 from app.models.enums import UserRole
 from app.core.security import get_password_hash, create_access_token
+from app.models.job import Job
+from app.models.enums import Vertical, TipoProceso, EstadoJob
 
 # Configurar pytest-asyncio
 pytest_plugins = ('pytest_asyncio',)
@@ -234,3 +237,36 @@ async def sample_client(db_session, sample_company):
     await db_session.commit()
     await db_session.refresh(client)
     return client
+
+@pytest.fixture(scope="function")
+async def sample_job(db_session, sample_company, sample_client):
+
+    job = Job(
+        id=uuid4(),
+        job_name=f"Test Job {uuid4()}",
+        empresa_id=sample_company.id,
+        cliente_id=sample_client.id,
+        vacancies=1,
+        vertical=Vertical.DEV,
+        type_of_process=TipoProceso.STAFFED_LARGO,
+        state=EstadoJob.ABIERTA
+    )
+    db_session.add(job)
+    await db_session.commit()
+    await db_session.refresh(job)
+    return job
+
+@pytest.fixture(scope="function")
+async def sample_job_template(db_session, sample_job):
+    template = Template(
+        id=uuid4(),
+        job_id=sample_job.id,
+        name="Job Template",
+        description="Job Description",
+        vertical=sample_job.vertical, 
+        type_of_process=sample_job.type_of_process 
+    )
+    db_session.add(template)
+    await db_session.commit()
+    await db_session.refresh(template)
+    return template
