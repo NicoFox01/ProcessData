@@ -14,9 +14,11 @@ from app.core.database import get_db
 from app.models.user import User
 from app.models.empresa import Empresa
 from app.models.cliente import Cliente
+from app.models.candidato import Candidato
+from app.models.proceso import Proceso
 from app.models.job import Job
 from app.models.template import Template
-from app.models.enums import Vertical, TipoProceso, EstadoJob
+from app.models.enums import Vertical, TipoProceso, EstadoJob, ProvinciaArgentina, NoticePeriod, EstadoGeneral
 
 # Configurar pytest-asyncio
 pytest_plugins = ('pytest_asyncio',)
@@ -270,3 +272,35 @@ async def sample_job_template(db_session, sample_job):
     await db_session.commit()
     await db_session.refresh(template)
     return template
+
+@pytest.fixture(scope="function")
+async def sample_candidate(db_session, sample_job):
+    candidate = Candidato(
+        id=uuid4(),
+        full_name="Jose Luis Rodriguez P.",
+        linkedin_url = "https://www.linkedin.com/in/joseluisrodriguezp/",
+        email="j.l.rodriguez@gmail.com",
+        phone="123456789",
+        residence_area=ProvinciaArgentina.MENDOZA,
+        salary_expectations=1000000,
+        notice_period=NoticePeriod.ONE_WEEK,
+    )
+    db_session.add(candidate)
+    await db_session.commit()
+    await db_session.refresh(candidate)
+    return candidate
+
+@pytest.mark.asyncio
+@pytest.fixture(scope="function")
+async def sample_job_process(db_session, sample_job, sample_candidate, admin_user):
+    job_process = Proceso(
+        id=uuid4(),
+        job_id=sample_job.id,
+        candidato_id=sample_candidate.id,
+        user_id=admin_user.id,
+        state=EstadoGeneral.SOURCING
+    )
+    db_session.add(job_process)
+    await db_session.commit()
+    await db_session.refresh(job_process)
+    return job_process
